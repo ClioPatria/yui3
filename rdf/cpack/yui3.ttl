@@ -14,13 +14,10 @@
 <> a cpack:Package ;
 	cpack:packageName "yui3" ;
 	dcterms:title "YAHOO User Interface library version 3" ;
-	cpack:author [ a foaf:Person ;
-		       foaf:name "@FOAFNAME@" ;
-		       foaf:mbox "@FOAFMBOX@" ;
-		     ] ;
+	cpack:author <http://www.few.vu.nl/~michielh/me> ;
 	cpack:primaryRepository
 	    [ a cpack:GitRepository ;
-	      cpack:gitURL <@FETCHREPOSITORY@>
+	      cpack:gitURL <git://eculture.cs.vu.nl/home/hildebra/git/ClioPatria/yui3.git>
 	    ] ;
 	cpack:description
 
