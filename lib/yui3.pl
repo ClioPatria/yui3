@@ -8,6 +8,7 @@
 
 :- use_module(library(http/js_write)).
 :- use_module(library(http/html_write)).
+:- use_module(library(http/html_head)).
 
 :- meta_predicate
 	js_yui3(+, +, :, -, +),
@@ -38,6 +39,7 @@ js_yui3_on(Id, Event, Fn) -->
 %	Emit javascript YUI3 object.
 
 js_yui3(Head, Include, Body) -->
+	html_requires(yui3('yui/yui-min.js')),
  	html(['YUI(',
 	      \js_args(Head),
 	      ').use(',
