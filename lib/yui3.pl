@@ -2,8 +2,10 @@
 	  [ js_yui3//3,
 	    js_yui3_event//5,
 	    js_yui3_on//3,
+	    js_yui3_delegate//5,
 	    js_function//2,
-	    js_function_decl//3
+	    js_function_decl//3,
+	    js_yui3_decl//2
 	  ]).
 
 :- use_module(library(http/js_write)).
@@ -13,25 +15,35 @@
 :- meta_predicate
 	js_yui3(+, +, :, -, +),
 	js_yui3_on(+, +, :, -, +),
+	js_yui3_event(+, +, +, :, +, -, +),
+	js_yui3_delegate(+, +, +, :, +, -, +),
         js_function(+, :, -, +),
 	js_function_decl(+, +, :, -, +).
 
 /* additional javascript support */
 
-%	js_yui3_event(+Id, +When, +EventType, +JSFunction, +Scope)
+%%	js_yui3_event(+Id, +When, +EventType, +JSFunction, +Scope)
 %
 %	Emit javascript event handler.
 
 js_yui3_event(Id, When, Event, Fn, Scope) -->
 	html([Id, '.' ,When, '("', Event, '",', Fn, ',', Scope, ');\n']).
 
-%	js_yui3_on(+Id, +EventType, +JSFunction)
+%%	js_yui3_on(+Id, +EventType, +JSFunction)
 %
 %	Emit javascript event handler.
 %	Same as js_yui3_event with When parameter = 'on'.
 
 js_yui3_on(Id, Event, Fn) -->
 	html([Id,'.on("',Event,'",', Fn, ');\n']).
+
+%	js_yui3_delegate(+Selecter, +Context, +EventType, +JSFunction,
+%	+Args)
+%
+%	Emit javascript event handler.
+
+js_yui3_delegate(Select, Context, Event, Fn, Args) -->
+	html(['Y.delegate', '("', Event, '",', Fn, ',', \js_arg(Select),', "',Context,'",', Args, ');\n']).
 
 
 %%	js_yui3(+Head, +Include, +Body)
@@ -79,3 +91,21 @@ js_vars([H]) --> !,
 js_vars([H|T]) -->
 	html([H,',']),
 	js_vars(T).
+
+
+%%	js_yui3_decl(+Name, +Value)
+%
+%	Emit javascript variable declaration.
+
+js_yui3_decl(Name, Value) -->
+	html(['Y.', Name, ' = ']),
+	js_arg(Value),
+	html(';\n').
+
+
+
+
+
+
+
+
