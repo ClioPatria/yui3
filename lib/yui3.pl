@@ -43,7 +43,7 @@ js_yui3_on(Id, Event, Fn) -->
 %	Emit javascript event handler.
 
 js_yui3_delegate(Select, Context, Event, Fn, Args) -->
-	html(['Y.delegate', '("', Event, '",', Fn, ',"', Select,'", "',Context,'",', Args, ');\n']).
+	html(['Y.delegate', '("', Event, '",', Fn, ',', \js_args([Select]),', "',Context,'",', Args, ');\n']).
 
 
 %%	js_yui3(+Head, +Include, +Body)
@@ -99,13 +99,8 @@ js_vars([H|T]) -->
 
 js_yui3_decl(Name, Value) -->
 	html(['Y.', Name, ' = ']),
-	js_arg(Value),
+	js_args([Value]),
 	html(';\n').
-
-
-
-
-
 
 
 
