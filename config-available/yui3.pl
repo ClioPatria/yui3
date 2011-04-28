@@ -6,7 +6,7 @@
 :- use_module(library(settings)).
 :- use_module(library(http/http_path)).
 
-:- setting(local, boolean, true,
+:- setting(local, boolean, false,
 	   'When set to true the local version of YUI is used').
 
 :- multifile http:location/3.
