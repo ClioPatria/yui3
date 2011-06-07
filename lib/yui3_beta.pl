@@ -62,7 +62,7 @@ yui3_include(List) -->
 %	Emit javascript object initializer
 
 yui3_new(Node, Object, Options) -->
-	html([Node, ' = new ', Object, '(']),
+	html(['var ', Node, ' = new ', Object, '(']),
 	js_arg(Options),
 	html(');\n').
 
