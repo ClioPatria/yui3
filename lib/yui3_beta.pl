@@ -1,5 +1,6 @@
 :- module(yui3_beta,
 	  [ yui3//3,
+	    yui3_combo//2,
 	    yui3_select//1,
 	    yui3_new//3,
 	    yui3_set//3,
@@ -12,7 +13,7 @@
 	    yui3_delegate//6,
 	    yui3_io//2,
 	    js_function//2
- 	  ]).
+	  ]).
 
 :- use_module(library(http/js_write)).
 :- use_module(library(http/html_write)).
@@ -40,12 +41,31 @@
 
 yui3(Head, Include, Body) -->
 	html_requires(yui3('yui/yui-min.js')),
-  	html('YUI('),
+	html('YUI('),
 	js_args(Head),
 	html(').use('),
- 	yui3_include(Include),
- 	js_function(['Y'], Body),
+	yui3_include(Include),
+	js_function(['Y'], Body),
 	html(');').
+
+yui3_combo(Type, Resources) -->
+	{
+	 create_combo_string(Type, Resources, ComboString)
+	},
+	html_requires(ComboString).
+
+create_combo_string(yui3, L,S) :-
+	setting(yui3_conf:version, Version),
+	setting(yui3_conf:combo, Combo),
+	atomic_list_concat([Version, '/build/'], Loc),
+	atomic_list_concat(['&', Loc], Sep),
+	atomic_list_concat(L, Sep, S0),
+	atomic_list_concat([Combo, '?', Loc, S0], S).
+
+create_combo_string(gallery, L, S) :-
+	setting(yui3_conf:combo, Combo),
+	atomic_list_concat(L, '&', S0),
+	atomic_list_concat([Combo, '?', S0], S).
 
 yui3_include([]) -->
 	!.
@@ -114,7 +134,7 @@ yui3_on(Selector, Event, Vars, Body) -->
 	yui3_select(Selector),
 	html(['.on("',Event,'",']),
 	js_function(Vars, Body),
- 	html(');\n').
+	html(');\n').
 
 %%	yui3_delegate(+Event, +Vars, :Body, +Selector, +Context, +Args)
 %
@@ -124,7 +144,7 @@ yui3_delegate(Event, Vars, Body, Selector, Context, Args) -->
 	html(['Y.delegate', '("', Event, '",']),
 	js_function(Vars, Body),
 	html(', '),
- 	yui3_select(Selector),
+	yui3_select(Selector),
 	html([', "',Context,'",', Args, ');\n']).
 
 %%	yui3_plug(+Node, +Plugin, +Conf)
@@ -165,7 +185,7 @@ yui3_select(Id) --> html(Id).
 %	Emit javascript function.
 
 js_function(Args, Body) -->
- 	html(['function(', \js_vars(Args), ') {\n']),
+	html(['function(', \js_vars(Args), ') {\n']),
 	html(Body),
 	html('}').
 
