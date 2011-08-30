@@ -1,20 +1,23 @@
-:- module(conf_yui3, []).
+:- module(yui3_conf, []).
 
 /** <module> YAHOO User Interface library version 3
 */
 
+
 :- use_module(library(settings)).
 :- use_module(library(http/http_path)).
 
-:- setting(local, boolean, false,
+:- setting(local, boolean, true,
 	   'When set to true the local version of YUI is used').
+:- setting(version, atom, '3.4.0', 'YUI version to use').
+:- setting(combo, atom, 'http://yui.yahooapis.com/combo', 'URI of yui combo service').
 
 :- multifile http:location/3.
 
-user:file_search_path(yui3js, web('yui/3.3.0')).
+user:file_search_path(yui3js, web('yui/x.x.0')).
 
-http:location(yui3,	    yui3_base(build),	       [js(true)]).
-http:location(yui3_examples, yui3_base(examples),	       [js(true)]).
+http:location(yui3,	     yui3_base(build),	       [js(true)]).
+http:location(yui3_examples, yui3_base(examples),      [js(true)]).
 
 local_yui3 :-
 	setting(local, true),
@@ -25,7 +28,7 @@ local_yui3 :-
 
 :- if(local_yui3).
 
-http:location(yui3_base,    www('yui/3.3.0'),	       []).
+http:location(yui3_base,    www('yui/x.y.0'),	       []).
 
 :- use_module(library(http/http_dispatch)).
 
@@ -37,6 +40,8 @@ serve_file(Request) :-
 
 :- else.
 
-http:location(yui3_base, 'http://yui.yahooapis.com/3.3.0PR3/', []).
+http:location(yui3_base, Base, []) :-
+	setting(version, Version),
+	format(atom(Base),'http://yui.yahooapis.com/~w', [Version]).
 
 :- endif.
