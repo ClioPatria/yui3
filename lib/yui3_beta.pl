@@ -56,16 +56,16 @@ yui3_combo(Type, Resources) -->
 
 create_combo_string(yui3, L,S) :-
 	setting(yui3_conf:version, Version),
-	setting(yui3_conf:combo, Combo),
+	setting(yui3_conf:remote_path, Path),
 	atomic_list_concat([Version, '/build/'], Loc),
 	atomic_list_concat(['&', Loc], Sep),
 	atomic_list_concat(L, Sep, S0),
-	atomic_list_concat([Combo, '?', Loc, S0], S).
+	atomic_list_concat([Path, 'combo?', Loc, S0], S).
 
 create_combo_string(gallery, L, S) :-
-	setting(yui3_conf:combo, Combo),
+	setting(yui3_conf:remote_path, Path),
 	atomic_list_concat(L, '&', S0),
-	atomic_list_concat([Combo, '?', S0], S).
+	atomic_list_concat([Path, 'combo?', S0], S).
 
 yui3_include([]) -->
 	!.
