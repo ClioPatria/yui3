@@ -45,6 +45,7 @@
 
 yui3(Head, Include, Body) -->
 	html_requires(yui3('yui/yui-min.js')),
+	html(\yui3_config),
 	html('YUI('),
 	js_args(Head),
 	html(').use('),
@@ -52,11 +53,12 @@ yui3(Head, Include, Body) -->
 	js_function(['Y'], Body),
 	html(');').
 
+yui3_config --> { setting(yui3_conf:local, false) }, !.
 yui3_config -->
 	{
 	 http_absolute_location(yui3_gall(.), LocalGalleryPath, [])
 	},
-	html(script([],['
+	html(['
 	YUI_config = {
            groups: {
             // set up for locally served gallery
@@ -70,8 +72,7 @@ yui3_config -->
             },
           }
 	}
-	'])).
-
+	']).
 
 yui3_combo(Type, Resources) -->
 	{
