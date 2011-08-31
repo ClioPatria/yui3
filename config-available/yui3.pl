@@ -16,6 +16,8 @@ Main functionality is to make it easy to:
 	   'When true the local version of YUI is used, when false (default) the normal YUI website is used.').
 :- setting(local_path, atom, './yui3',
 	   'Location of the local yui git (absolute dir name or relative to server directory)').
+:- setting(local_gallery_path, atom, './yui3-gallery',
+	   'Location of the local gallery git (absolute dir name or relative to server directory)').
 :- setting(remote_path, atom, 'http://yui.yahooapis.com/',
 	   'Location of the local yui git (absolute dir name or relative to server directory)').
 :- setting(version, atom, '3.4.0',
@@ -23,13 +25,19 @@ Main functionality is to make it easy to:
 
 :- multifile http:location/3.
 
-user:file_search_path(yui3_base, LocalYui3) :- setting(local_path, LocalYui3).
+user:file_search_path(yui3_base, LocalYui3) :- setting(local_path,         LocalYui3).
+user:file_search_path(yui3_gall, LocalGall) :- setting(local_gallery_path, LocalGall).
 
-:- http_handler(yui3_base(.), serve_local_yui3, [prefix]).
+:- http_handler(yui3_base(.), serve_local_yui3,         [prefix]).
+:- http_handler(yui3_gall(.), serve_local_yui3_gallery, [prefix]).
 
 serve_local_yui3(Request) :-
 	memberchk(path_info(Path), Request),
 	http_reply_file(yui3_base(Path), [], Request).
+
+serve_local_yui3_gallery(Request) :-
+	memberchk(path_info(Path), Request),
+	http_reply_file(yui3_gall(Path), [], Request).
 
 http:location(yui3_base, root(local_yui3_version), []) :-
 	setting(local, true),!.
@@ -37,6 +45,8 @@ http:location(yui3_base, Base, []) :-
 	setting(version, Version),
 	setting(remote_path, Path),
 	format(atom(Base),'~w~w', [Path,Version]).
+http:location(yui3_gall, root(local_yui3_gallery), []) :-
+	setting(local, true),!.
 
 http:location(yui3,	     yui3_base(build),	       [js(true)]).
 http:location(yui3_examples, yui3_base(examples),      [js(true)]).

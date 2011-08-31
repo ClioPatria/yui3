@@ -1,5 +1,6 @@
 :- module(yui3_beta,
 	  [ yui3//3,
+	    yui3_config//0,
 	    yui3_combo//2,
 	    yui3_select//1,
 	    yui3_new//3,
@@ -18,6 +19,9 @@
 :- use_module(library(http/js_write)).
 :- use_module(library(http/html_write)).
 :- use_module(library(http/html_head)).
+:- use_module(library(http/http_path)).
+
+:- style_check(-atom).
 
 :- meta_predicate
 	yui3(+, +, :, -, +),
@@ -47,6 +51,27 @@ yui3(Head, Include, Body) -->
 	yui3_include(Include),
 	js_function(['Y'], Body),
 	html(');').
+
+yui3_config -->
+	{
+	 http_absolute_location(yui3_gall(.), LocalGalleryPath, [])
+	},
+	html(script([],['
+	YUI_config = {
+           groups: {
+            // set up for locally served gallery
+            gallery: {
+                combine: false,
+                base: "', LocalGalleryPath, 'build/",
+                patterns: {
+                    "gallery-": {},
+                    "gallerycss-": { type: "css" }
+                }
+            },
+          }
+	}
+	'])).
+
 
 yui3_combo(Type, Resources) -->
 	{
