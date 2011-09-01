@@ -51,10 +51,20 @@ http:location(gallery, root(local_yui3_gallery/build), []) :-
 http:location(gallery, this_will_not_be_used, []) :-
 	setting(local, false),!. % just to make http:location(gallery,_) det.
 
+
 http:location(yui3,	     yui3_base(build),	       [js(true)]).
 http:location(yui3_examples, yui3_base(examples),      [js(true)]).
 
+/*
 :- if(current_predicate(http_clean_location_cache/0)).
 :- listen(settings(changed(yui3_conf:_, _, _)), http_clean_location_cache).
 :- endif.
 
+*/
+
+:- if(\+current_predicate(http_clean_location_cache/0)).
+http_clean_location_cache :-
+	retractall(http_path:location_cache(_,_,_)).
+:- endif.
+
+:- listen(settings(changed(yui3_conf:_, _, _)), http_clean_location_cache).
