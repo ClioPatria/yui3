@@ -56,5 +56,5 @@ http:location(yui3_examples, yui3_base(examples),      [js(true)]).
 
 :- if(current_predicate(http_clean_location_cache/0)).
 :- listen(settings(changed(yui3_conf:_, _, _)), http_clean_location_cache).
-:- endif
+:- endif.
 
