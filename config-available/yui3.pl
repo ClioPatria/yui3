@@ -54,7 +54,7 @@ http:location(gallery, this_will_not_be_used, []) :-
 http:location(yui3,	     yui3_base(build),	       [js(true)]).
 http:location(yui3_examples, yui3_base(examples),      [js(true)]).
 
-:- listen(settings(changed(yui3_conf:_, _, _)),
-	  http_path:clean_location_cache).
-
+:- if(current_predicate(http_clean_location_cache/0)).
+:- listen(settings(changed(yui3_conf:_, _, _)), http_clean_location_cache).
+:- endif
 
