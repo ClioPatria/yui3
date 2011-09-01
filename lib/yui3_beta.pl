@@ -56,7 +56,7 @@ yui3(Head, Include, Body) -->
 yui3_config --> { setting(yui3_conf:local, false) }, !.
 yui3_config -->
 	{
-	 http_absolute_location(yui3_gall(.), LocalGalleryPath, [])
+	 http_absolute_location(gallery(.), LocalGalleryPath, [])
 	},
 	html(['
 	YUI_config = {
@@ -64,7 +64,7 @@ yui3_config -->
             // set up for locally served gallery
             gallery: {
                 combine: false,
-                base: "', LocalGalleryPath, 'build/",
+                base: "', LocalGalleryPath, '",
                 patterns: {
                     "gallery-": {},
                     "gallerycss-": { type: "css" }
@@ -76,9 +76,19 @@ yui3_config -->
 
 yui3_combo(Type, Resources) -->
 	{
+	 setting(yui3_conf:local, false),!,
 	 create_combo_string(Type, Resources, ComboString)
 	},
 	html_requires(ComboString).
+
+yui3_combo(_, []) --> !.
+yui3_combo(Type, [H|T]) -->
+	{
+	 Spec =.. [Type,H],
+	 http_absolute_location(Spec, R, [])
+	},
+	html_requires(R),
+	yui3_combo(Type, T).
 
 create_combo_string(yui3, L,S) :-
 	setting(yui3_conf:version, Version),
@@ -92,6 +102,7 @@ create_combo_string(gallery, L, S) :-
 	setting(yui3_conf:remote_path, Path),
 	atomic_list_concat(L, '&', S0),
 	atomic_list_concat([Path, 'combo?', S0], S).
+
 
 yui3_include([]) -->
 	!.

@@ -25,11 +25,12 @@ Main functionality is to make it easy to:
 
 :- multifile http:location/3.
 
-user:file_search_path(yui3_base, LocalYui3) :- setting(local_path,         LocalYui3).
-user:file_search_path(yui3_gall, LocalGall) :- setting(local_gallery_path, LocalGall).
+
+user:file_search_path(yui3_base, LocalYui3) :-       setting(local_path,         LocalYui3).
+user:file_search_path(gallery,   LocalGall/build) :- setting(local_gallery_path, LocalGall).
 
 :- http_handler(yui3_base(.), serve_local_yui3,         [prefix]).
-:- http_handler(yui3_gall(.), serve_local_yui3_gallery, [prefix]).
+:- http_handler(gallery(.),   serve_local_yui3_gallery, [prefix]).
 
 serve_local_yui3(Request) :-
 	memberchk(path_info(Path), Request),
@@ -37,7 +38,7 @@ serve_local_yui3(Request) :-
 
 serve_local_yui3_gallery(Request) :-
 	memberchk(path_info(Path), Request),
-	http_reply_file(yui3_gall(Path), [], Request).
+	http_reply_file(gallery(Path), [], Request).
 
 http:location(yui3_base, root(local_yui3_version), []) :-
 	setting(local, true),!.
@@ -45,8 +46,10 @@ http:location(yui3_base, Base, []) :-
 	setting(version, Version),
 	setting(remote_path, Path),
 	format(atom(Base),'~w~w', [Path,Version]).
-http:location(yui3_gall, root(local_yui3_gallery), []) :-
+http:location(gallery, root(local_yui3_gallery/build), []) :-
 	setting(local, true),!.
+http:location(gallery, this_will_not_be_used, []) :-
+	setting(local, false),!. % just to make http:location(gallery,_) det.
 
 http:location(yui3,	     yui3_base(build),	       [js(true)]).
 http:location(yui3_examples, yui3_base(examples),      [js(true)]).
