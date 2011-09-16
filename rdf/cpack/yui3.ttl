@@ -21,7 +21,7 @@
 	    ] ;
 	cpack:description
 
-"""The package description goes here.  You can use PlDoc Wiki markup.
+"""Package to simplify the use of YUI3 in Cliopatria apps, including switching from remote to local deployment of YUI3.
 """ .
 
 
