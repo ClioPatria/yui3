@@ -13,6 +13,7 @@
 	    yui3_on//4,
 	    yui3_delegate//6,
 	    yui3_io//2,
+	    yui3_load//2,
 	    js_function//2
 	  ]).
 
@@ -69,7 +70,7 @@ yui3_config -->
                     "gallery-": {},
                     "gallerycss-": { type: "css" }
                 }
-            },
+            }
           }
 	}
 	']).
@@ -200,6 +201,16 @@ yui3_plug(Selector, Plugin, Conf) -->
 
 yui3_io(Server, Conf) -->
 	html(['Y.io("',Server,'", ', \js_args([Conf]), ');']).
+
+
+%%	yui3_load(+Node, +URL)
+%
+%	Fetch remote html and set content to Node
+
+yui3_load(Node, URL) -->
+	yui3_select(Node),
+	html(['.load(',\js_arg(URL),');']).
+
 
 %%	yui3_select(+YUI3_Selector)
 %

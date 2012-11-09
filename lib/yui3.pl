@@ -34,7 +34,7 @@
 
 js_yui3(Head, Include, Body) -->
 	html_requires(yui3('yui/yui-min.js')),
- 	html('var Y = YUI(\n'),
+	html('var Y = YUI(\n'),
 	js_args(Head),
 	html(');\n'),
 	html('Y.use('),
@@ -80,7 +80,7 @@ js_yui3_delegate(Select, Context, Event, Fn, Args) -->
 %	Emit javascript function.
 
 js_function(Args, Body) -->
- 	html(['function(', \js_vars(Args), ') {\n']),
+	html(['function(', \js_vars(Args), ') {\n']),
 	html([Body,'\n']),
 	html('}').
 
