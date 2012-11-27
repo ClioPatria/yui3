@@ -20,7 +20,7 @@ Main functionality is to make it easy to:
 	   'Location of the local gallery git (absolute dir name or relative to server directory)').
 :- setting(remote_path, atom, 'http://yui.yahooapis.com/',
 	   'Location of the local yui git (absolute dir name or relative to server directory)').
-:- setting(version, atom, '3.4.1',
+:- setting(version, atom, '3.7.1',
 	   'remote YUI version to use (e.g. when local=false)').
 
 :- multifile http:location/3.
