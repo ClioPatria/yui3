@@ -18,6 +18,7 @@
 	  ]).
 
 :- use_module(library(http/js_write)).
+:- use_module(library(http/json)).
 :- use_module(library(http/html_write)).
 :- use_module(library(http/html_head)).
 :- use_module(library(http/http_path)).
@@ -188,6 +189,18 @@ yui3_delegate(Event, Vars, Body, Selector, Context, Args) -->
 %%	yui3_plug(+Node, +Plugin, +Conf)
 %
 %	Emit javascript plugin.
+
+
+
+yui3_plug(Selector, Plugin, Conf) -->
+	{ is_dict(Conf),
+	  atom_json_dict(Json, Conf, [])
+	},
+	yui3_select(Selector),
+	html(['.plug(', Plugin, ',']),
+
+	html(Json),
+	html(');\n').
 
 yui3_plug(Selector, Plugin, Conf) -->
 	yui3_select(Selector),
