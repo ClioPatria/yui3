@@ -190,7 +190,7 @@ yui3_delegate(Event, Vars, Body, Selector, Context, Args) -->
 %
 %	Emit javascript plugin.
 
-
+:- if(current_predicate(is_dict/1)).
 
 yui3_plug(Selector, Plugin, Conf) -->
 	{ is_dict(Conf),
@@ -201,6 +201,8 @@ yui3_plug(Selector, Plugin, Conf) -->
 
 	html(Json),
 	html(');\n').
+
+:- endif.
 
 yui3_plug(Selector, Plugin, Conf) -->
 	yui3_select(Selector),
