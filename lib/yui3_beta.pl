@@ -120,9 +120,20 @@ yui3_include(List) -->
 %
 %	Emit javascript object initializer
 
+:- if(current_predicate(is_dict/1)).
+
+yui3_new(Node, Object, Options) -->
+	{ is_dict(Options),
+	  atom_json_dict(Atom, Options, [as(atom)])
+	},
+	html(['var ', Node, ' = new ', Object, '(', Atom]),
+	html(');\n').
+
+:-endif.
+
 yui3_new(Node, Object, Options) -->
 	html(['var ', Node, ' = new ', Object, '(']),
-	js_arg(Options),
+	js_expression(Options),
 	html(');\n').
 
 
