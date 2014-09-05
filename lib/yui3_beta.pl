@@ -209,8 +209,7 @@ yui3_plug(Selector, Plugin, Conf) -->
 	},
 	yui3_select(Selector),
 	html(['.plug(', Plugin, ',']),
-
-	html(Json),
+	html(\[Json]),
 	html(');\n').
 
 :- endif.
