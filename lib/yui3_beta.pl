@@ -23,8 +23,6 @@
 :- use_module(library(http/html_head)).
 :- use_module(library(http/http_path)).
 
-:- style_check(-atom).
-
 :- meta_predicate
 	yui3(+, +, :, -, +),
 	yui3_select(+, -, +),
