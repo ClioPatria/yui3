@@ -18,9 +18,9 @@ Main functionality is to make it easy to:
 	   'Location of the local yui git (absolute dir name or relative to server directory)').
 :- setting(local_gallery_path, atom, './yui3-gallery',
 	   'Location of the local gallery git (absolute dir name or relative to server directory)').
-:- setting(remote_path, atom, 'http://yui.yahooapis.com/',
-	   'Location of the local yui git (absolute dir name or relative to server directory)').
-:- setting(version, atom, '3.17.2',
+ :- setting(remote_path, atom, 'https://yui-s.yahooapis.com/',
+	   'Remote location of YUI api)').
+:- setting(version, atom, '3.18.1',
 	   'remote YUI version to use (e.g. when local=false)').
 
 :- multifile http:location/3.
@@ -41,15 +41,15 @@ serve_local_yui3_gallery(Request) :-
 	http_reply_file(gallery(Path), [], Request).
 
 http:location(yui3_base, root(local_yui3_version), []) :-
-	setting(local, true),!.
+	setting(yui3_conf:local, true),!.
 http:location(yui3_base, Base, []) :-
-	setting(version, Version),
-	setting(remote_path, Path),
+	setting(yui3_conf:version, Version),
+	setting(yui3_conf:remote_path, Path),
 	format(atom(Base),'~w~w', [Path,Version]).
 http:location(gallery, root(local_yui3_gallery/build), []) :-
-	setting(local, true),!.
+	setting(yui3_conf:local, true),!.
 http:location(gallery, this_will_not_be_used, []) :-
-	setting(local, false),!. % just to make http:location(gallery,_) det.
+	setting(yui3_conf:local, false),!. % just to make http:location(gallery,_) det.
 
 
 http:location(yui3,	     yui3_base(build),	       [js(true)]).
