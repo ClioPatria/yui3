@@ -18,8 +18,8 @@ Main functionality is to make it easy to:
 	   'Location of the local yui git (absolute dir name or relative to server directory)').
 :- setting(local_gallery_path, atom, './yui3-gallery',
 	   'Location of the local gallery git (absolute dir name or relative to server directory)').
-:- setting(remote_path, atom, 'http://yui.yahooapis.com/',
-	   'Location of the local yui git (absolute dir name or relative to server directory)').
+:- setting(remote_path, atom, 'https://yui-s.yahooapis.com/',
+	   'Location of the remore YUI3 API').
 :- setting(version, atom, '3.17.2',
 	   'remote YUI version to use (e.g. when local=false)').
 
